@@ -27,6 +27,8 @@ public class TicTacTo {
         frame.setFont(new Font("Helvetica", Font.BOLD, 50));
         textLabel.setHorizontalAlignment(JLabel.CENTER);
 
+        //Lagt til kommentar
+
 
 
     }
