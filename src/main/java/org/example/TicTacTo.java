@@ -16,7 +16,7 @@ public class TicTacTo {
     JButton [][] brett = new JButton[3][3];
     String spillerX = "X";
     String spillerO = "O";
-    String nåværendesSpiller = spillerX;
+    String novaarendesSpiller = spillerX;
 
     Boolean gameOver = false;
     int omganger = 0;
@@ -32,8 +32,8 @@ public class TicTacTo {
         frame.setLayout(new BorderLayout());
 
         //Sett tekst, farger og font i brettspillet
-        textLabel.setForeground(Color.darkGray);
-        textLabel.setBackground(Color.white);
+        textLabel.setBackground(Color.darkGray);
+        textLabel.setForeground(Color.white);
         frame.setFont(new Font("Helvetica", Font.BOLD, 50));
         textLabel.setHorizontalAlignment(JLabel.CENTER);
         textLabel.setText("Tic-Tac-Toe");
@@ -44,9 +44,20 @@ public class TicTacTo {
         frame.add(textPanel,BorderLayout.NORTH);
 
         //Lage grid på brettet
-        boardPanel.setLayout(new GridLayout(3,3));
+        boardPanel.setLayout(new GridLayout(3, 3));
         boardPanel.setBackground(Color.darkGray);
         frame.add(boardPanel);
+
+        /*Lag tekstboks i bunn
+        textPanel.setLayout(new BorderLayout());
+        textPanel.setBackground(Color.darkGray);
+        textPanel.setForeground(Color.white);
+        frame.setFont(new Font("Helvetica", Font.BOLD, 100));
+        textLabel.setHorizontalAlignment(JLabel.CENTER);
+        textLabel.setText("Spill igjen");
+        textLabel.setOpaque(true);
+        textPanel.add(textLabel);
+        frame.add(textPanel,BorderLayout.SOUTH); */
 
         for(int r = 0; r < 3; r++){
             for(int k = 0; k < 3; k++){
@@ -54,7 +65,7 @@ public class TicTacTo {
                 brett[r][k] = flis;
                 boardPanel.add(flis);
 
-                flis.setForeground(Color.white);
+                flis.setForeground(Color.darkGray);
                 flis.setBackground(Color.darkGray);
                 flis.setFont(new Font("Arial", Font.BOLD ,120));
                 flis.setFocusable(false);
@@ -68,12 +79,12 @@ public class TicTacTo {
                         if(gameOver) return;
                         JButton flis = (JButton) e.getSource();
                         if(flis.getText().equals("")){
-                            flis.setText(nåværendesSpiller);
+                            flis.setText(novaarendesSpiller);
                             omganger++;
                             sjekkVinner();
                             if(!gameOver){
-                                nåværendesSpiller = nåværendesSpiller == spillerX ? spillerO : spillerX;
-                                textLabel.setText(nåværendesSpiller + " ´s sin tur til å spille.");
+                                novaarendesSpiller = novaarendesSpiller == spillerX ? spillerO : spillerX;
+                                textLabel.setText(novaarendesSpiller + " ´s sin tur til å spille.");
                             }
                         }
                     }
@@ -83,13 +94,14 @@ public class TicTacTo {
         }
     }
 
-    public void sjekkVinner(){
+    public void sjekkVinner() {
         //Horisontalt
-        for(int r = 0; r < 3; r++){
-            if(brett[r][0].getText().equals("")) continue;
+        for (int r = 0; r < 3; r++) {
+            if (brett[r][0].getText().equals("")) continue;
 
-            if(brett[r][0].getText().equals(brett[r][1].getText()) && brett[r][1].equals(brett[r][2].getText())){
-                for (int i = 0; i < 3; i++){
+            if (brett[r][0].getText() == brett[r][1].getText() &&
+                    brett[r][1].getText() == brett[r][2].getText()) {
+                for (int i = 0; i < 3; i++) {
                     setVinner(brett[r][i]);
                 }
                 gameOver = true;
@@ -98,19 +110,46 @@ public class TicTacTo {
         }
 
         //Vertikalt
-        for(int k = 0; k < 3; k++){
+        for (int k = 0; k < 3; k++) {
+            if (brett[0][k].getText() == ("")) continue;
+
+            if (brett[0][k].getText() == brett[1][k].getText() &&
+                    brett[1][k].getText() == brett[2][k].getText()) {
+                for (int i = 0; i < 3; i++) {
+                    setVinner(brett[i][k]);
+                }
+                gameOver = true;
+                return;
+            }
 
         }
 
+
         //diagonalt
 
+        if(brett[0][0].getText() == brett[1][1].getText() &&
+                brett[1][1].getText() == brett[2][2].getText() &&
+                brett[0][0].getText() != ""){
+            for(int i = 0; i <3; i++){
+                setVinner(brett[i][i]);
+            }
+            gameOver = true;
+            return;
+        }
 
         //omvendt diagonal
-
+        if(brett [0][2].getText() == brett[1][1].getText() &&
+                brett[1][1].getText() == brett[2][0].getText()&&
+        brett[0][2].getText() != ""){
+            setVinner(brett[0][2]);
+            setVinner(brett[1][1]);
+            setVinner(brett[2][0]);
+            gameOver = true;
+            return;
+        }
 
 
         //Omganger
-
         if(omganger == 9){
             for(int r = 0; r < 3; r++){
                 for(int k = 0; k < 3; k++){
@@ -132,6 +171,6 @@ public class TicTacTo {
     private void setVinner(JButton flis) {
         flis.setForeground(Color.green);
         flis.setBackground(Color.gray);
-        textLabel.setText(nåværendesSpiller + " er vinneren!");
+        textLabel.setText(novaarendesSpiller + " er vinneren!");
     }
 }
